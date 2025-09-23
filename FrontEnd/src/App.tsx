@@ -1,7 +1,7 @@
 import "./App.css";
 import Logo from "./component/logo";
 import { SelectColor } from "./component/colorPicker";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState,  } from "react";
 function App() {
   const [color,setColor] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -25,6 +25,7 @@ function App() {
       <div  className={`absolute   w-[100%] flex justify-center items-center h-[100%] z-10 ${color
         ?'scale-100 opacity-100':'scale-0 opacity-0'
       } transition-all duration-500`}>
+        
       <SelectColor/>
       </div>
     }
