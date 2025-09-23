@@ -1,5 +1,5 @@
 // components/Logo.tsx
-import React from "react";
+
 import clsx from "clsx";
 
 type LogoProps = {
@@ -10,14 +10,12 @@ type LogoProps = {
 };
 
 export default function Logo({
-  size = 28,
+
   className,
   dark = true,
 }: LogoProps) {
-  const s = size;
-  const r = Math.max(4, Math.round(s * 0.24)); // rounded radius
-  const gap = Math.max(2, Math.round(s * 0.12));
-  const tile = Math.floor((s - gap) / 2);
+
+   // rounded radius\
 
   return (
     <div className={clsx("inline-flex items-center gap-2 ", className)}>
