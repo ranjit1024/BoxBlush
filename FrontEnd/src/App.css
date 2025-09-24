@@ -3,4 +3,20 @@
 
 @theme {
   --font-roboto: "Roboto", sans-serif; 
+  --animate-main: main 5s ease-in-out infinite;
+  @keyframes main {
+    
+    25% {
+      transform: translateY( 25%) ;
+    }
+    50%{
+       transform: translateX( 0%) ;
+    }
+    75% {
+      transform:  translateY(25%);
+    }
+    100%{
+       transform: translateX( 0%) ;
+    }
+  }
 }
