@@ -1,7 +1,7 @@
+import { ColorPicker } from "react-aria-components";
 import "./App.css";
-import Logo from "./component/logo";
-import { SelectColor } from "./component/colorPicker";
 import { useEffect, useRef, useState,  } from "react";
+import { SelectColor } from "./component/colorPicker";
 function App() {
     const [isHovered, setIsHovered] = useState(false);
   const [color,setColor] = useState<boolean>(false);
@@ -23,6 +23,12 @@ function App() {
     
     <div className="h-[90%] ">
        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col">
+      {
+        color?<div className="absolute w-full h-full flex justify-center items-center z-10">
+        <SelectColor/>
+      </div>:null
+
+      }
       {/* Header/Navigation */}
       <header className="p-6 flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -48,7 +54,7 @@ function App() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5-5-5h5V3h5v14z" />
             </svg>
           </button>
-          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+       
         </div>
       </header>
 
@@ -61,22 +67,26 @@ function App() {
               Ready to Play?
             </h2>
             <p className="text-gray-400 text-lg md:text-xl max-w-md mx-auto leading-relaxed">
-              Create custom games, challenge friends, and climb the leaderboard in our gaming universe.
+              Choose any color and try to fill the most boxes possible
             </p>
           </div>
 
           {/* Main CTA Button */}
           <div className="relative">
             <button
+            ref={buttonRef}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="group relative px-12 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-lg font-semibold rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/25 focus:outline-none focus:ring-4 focus:ring-yellow-400/50"
+              onClick={()=>{
+                setColor(prev => !prev)
+              }}
+              className="group relative hover:cursor-pointer px-12 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-lg font-semibold rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/25 focus:outline-none focus:ring-4 focus:ring-yellow-400/50"
             >
               {/* Button Background Animation */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               {/* Button Content */}
-              <span className="relative flex items-center space-x-2">
+              <span className="relative flex items-center space-x-2 hover:cursor-pointer">
                 <span>Create a Game</span>
                 <svg 
                   className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} 
