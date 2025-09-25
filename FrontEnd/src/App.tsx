@@ -1,18 +1,23 @@
 import { ColorPicker } from "react-aria-components";
 import "./App.css";
 import { useEffect, useRef, useState,  } from "react";
-import { SelectColor } from "./component/colorPicker";
+import ColorSelector from "./component/colorPicker";
 function App() {
     const [isHovered, setIsHovered] = useState(false);
   const [color,setColor] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const colorRef  = useRef<HTMLDivElement>(null)
   useEffect(()=>{
     
     function hide(event:MouseEvent){
-      if(buttonRef.current && !buttonRef.current.contains(event.target as Node) ){
+          const target = event.target as Node;
+      if( buttonRef.current && 
+      !buttonRef.current.contains(target) &&
+      colorRef.current && 
+      !colorRef.current.contains(target) ){
         setColor(false);
       }
-      console.log("fsdf")
+      
     }
     if(color){
       document.addEventListener('click',hide);
@@ -24,8 +29,10 @@ function App() {
     <div className="h-[90%] ">
        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col">
       {
-        color?<div className="absolute w-full h-full flex justify-center items-center z-10">
-        <SelectColor/>
+        color?<div ref={colorRef}   className="absolute w-full h-full flex justify-center items-center z-10">
+          <div >
+        <ColorSelector/>
+            </div>
       </div>:null
 
       }
