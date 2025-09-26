@@ -25,7 +25,10 @@ wss.on("connection", (request: WebSocket) => {
     console.log(`Something Went wrong`);
     delete clients[clientId]
   })
-  request.send(`Client Connected ${clientId}`)
+  request.send(JSON.stringify({
+    "method":'connect',
+    "clientId":clientId
+  }))
 });
 httpServer.listen(8080, () => {
   console.log("Listing on pot nmber 8080");
