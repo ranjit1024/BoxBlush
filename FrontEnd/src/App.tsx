@@ -1,7 +1,7 @@
 import "./App.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ColorSelector from "./component/colorPicker";
-
+import { BrowserRouter } from "react-router-dom";
 function App() {
   const [isHovered, setIsHovered] = useState(false);
   const [color, setColor] = useState<boolean>(false);
@@ -49,6 +49,7 @@ function App() {
     return () => document.removeEventListener("click", hide);
   }, [color]);
   return (
+    <BrowserRouter>
     <div className="h-[90%] ">
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col">
         {color ? (
@@ -208,6 +209,7 @@ function App() {
         </div>
       </div>
     </div>
+    </BrowserRouter>
   );
 }
 
