@@ -1,6 +1,8 @@
 import "../App.css";
-import {  useEffect, useMemo, useRef, useState } from "react";
+import {  use, useEffect, useMemo, useRef, useState } from "react";
 import ColorSelector from "./colorPicker";
+import GameCard from "./join";
+import { track } from "motion/react-client";
 
 
 export function Home() {
@@ -9,7 +11,11 @@ export function Home() {
   const [socket, setSocket] = useState<WebSocket>();
   const [clientId, setClientId] = useState<string>();
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [join,setjoin] = useState(false)
   const colorRef = useRef<HTMLDivElement>(null);
+  const joinRef = useRef<HTMLDivElement>(null);
+  const joinButtonRef = useRef<HTMLButtonElement>(null);
+  const gameId = useRef<HTMLInputElement>(null)
   useMemo(() => {
     let socket = new WebSocket("ws://localhost:8080");
     console.log(socket);
@@ -58,6 +64,13 @@ export function Home() {
         color:localStorage.getItem("selectedColor")
     }
     sendMessage(payload)
+  };
+  const joinGame = () =>{
+    const paylod = {
+        method:"join",
+        clientId:clientId,
+        
+    }
   }
   useEffect(() => {
     function hide(event: MouseEvent) {
@@ -66,7 +79,8 @@ export function Home() {
         buttonRef.current &&
         !buttonRef.current.contains(target) &&
         colorRef.current &&
-        !colorRef.current.contains(target)
+        !colorRef.current.contains(target) 
+        
       ) {
         setColor(false);
       }
@@ -76,9 +90,30 @@ export function Home() {
     }
     return () => document.removeEventListener("click", hide);
   }, [color]);
+  useEffect(()=>{
+    function hide(e:MouseEvent){
+        const target = e.target as Node;
+        if(joinRef.current && !joinRef.current.contains(target) && joinButtonRef.current && !joinButtonRef.current.contains(target)){
+            setjoin(false);
+            
+        }
+    }
+    if(join){
+        document.addEventListener('click', hide);
+    }
+    return () => document.removeEventListener("click",hide)
+  }, [join])
   return (
     <div className="h-[90%] ">
+        
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col">
+        {join?<div className="absolute w-full h-full flex justify-center items-center z-10">
+            <div ref={joinRef}>
+             <GameCard join={()=>{
+                console.log("working")
+             }} />
+            </div>
+          </div>:null}
         {color ? (
           <div className="absolute w-full h-full flex justify-center items-center z-10">
             <div ref={colorRef}>
@@ -135,7 +170,7 @@ export function Home() {
                 Choose any color and try to fill the most boxes possible
               </p>
             </div>
-
+       
             {/* Main CTA Button */}
             <div className="relative">
               <button
@@ -179,9 +214,10 @@ export function Home() {
             {/* Quick Actions */}
             <div className="flex flex-wrap justify-center gap-4 pt-8">
               <button
+                ref={joinButtonRef}
                 onClick={() => {
                  
-                  
+                  setjoin(true)
                 }}
                 className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-200"
               >
@@ -217,7 +253,7 @@ export function Home() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  <span>Create Game</span>
+                  <span>Explore all</span>
                 </span>
               </button>
             </div>
