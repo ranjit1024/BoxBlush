@@ -1,8 +1,7 @@
 import "../App.css";
-import {  use, useEffect, useMemo, useRef, useState } from "react";
+import {   useEffect, useMemo, useRef, useState } from "react";
 import ColorSelector from "./colorPicker";
 import GameCard from "./join";
-import { track } from "motion/react-client";
 
 
 export function Home() {
