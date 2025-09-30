@@ -5,7 +5,6 @@ const ColorSelector = ({send}:{
   send:React.MouseEventHandler<HTMLButtonElement>
 }) => {
   const [selectedColor, setSelectedColor] = useState(null);
-
   const colors = [
     {
       name: "Blue",
@@ -145,7 +144,7 @@ const ColorSelector = ({send}:{
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1, duration: 0.3 }}
           whileHover={{ scale: 1.05, y: -2 }}
-         
+          
           className={`border-2 border-amber-700 ':null} text-md px-6 py-2 rounded-md  font-bold bg-gradient-to-r from-yellow-400 to-orange-500  mb-2 hover:cursor-pointer `}
         >
           OK

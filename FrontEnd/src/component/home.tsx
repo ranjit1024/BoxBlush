@@ -5,121 +5,17 @@ import GameCard from "./join";
 
 
 export function Home() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [color, setColor] = useState<boolean>(false);
-  const [socket, setSocket] = useState<WebSocket>();
-  const [clientId, setClientId] = useState<string>();
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [join,setjoin] = useState(false)
-  const colorRef = useRef<HTMLDivElement>(null);
-  const joinRef = useRef<HTMLDivElement>(null);
-  const joinButtonRef = useRef<HTMLButtonElement>(null);
-  const gameId = useRef<HTMLInputElement>(null)
-  useMemo(() => {
-    let socket = new WebSocket("ws://localhost:8080");
-    console.log(socket);
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-      setSocket(socket);
-    };
-    // connect code 
-    socket.onmessage = (event) => {
-      const response: {
-        method: string;
-        clientId: string;
-      } = JSON.parse(event.data);
-        console.log(response)
-        setClientId(response.clientId);
-        localStorage.setItem("clientId", response.clientId);
-    };
-    socket.onmessage = (event) =>{
-        const response:{
-            method:string,
-            game:{
-                id:string
-            },
-            clells:number
-        }=JSON.parse(event.data);
-        if(response.method === 'create'){
-            localStorage.setItem("gameId", String(response.game.id))
-            console.log(response)
-        }
-    }
-    return () => socket.close();
-  }, []);
-
-  const sendMessage  = (payload:any) =>{
-    if(socket && socket.readyState === WebSocket.OPEN ){
-        socket.send(JSON.stringify(payload))
-    }
-    else{
-        console.warn("Websocket is not connected")
-    }
-  }
-  const createRoom = () =>{
-    const payload = {
-        method:"create",
-        clientId:clientId,
-        color:localStorage.getItem("selectedColor")
-    }
-    sendMessage(payload)
-  };
-  const joinGame = () =>{
-    const paylod = {
-        method:"join",
-        clientId:clientId,
-        
-    }
-  }
-  useEffect(() => {
-    function hide(event: MouseEvent) {
-      const target = event.target as Node;
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        colorRef.current &&
-        !colorRef.current.contains(target) 
-        
-      ) {
-        setColor(false);
-      }
-    }
-    if (color) {
-      document.addEventListener("click", hide);
-    }
-    return () => document.removeEventListener("click", hide);
-  }, [color]);
-  useEffect(()=>{
-    function hide(e:MouseEvent){
-        const target = e.target as Node;
-        if(joinRef.current && !joinRef.current.contains(target) && joinButtonRef.current && !joinButtonRef.current.contains(target)){
-            setjoin(false);
-            
-        }
-    }
-    if(join){
-        document.addEventListener('click', hide);
-    }
-    return () => document.removeEventListener("click",hide)
-  }, [join])
+  
   return (
     <div className="h-[90%] ">
         
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex flex-col">
-        {join?<div className="absolute w-full h-full flex justify-center items-center z-10">
-            <div ref={joinRef}>
-             <GameCard join={()=>{
-                console.log("working")
-             }} />
-            </div>
-          </div>:null}
-        {color ? (
-          <div className="absolute w-full h-full flex justify-center items-center z-10">
-            <div ref={colorRef}>
-              <ColorSelector send={createRoom} />
+        <div className="absolute w-full h-full flex justify-center items-center z-10">
+            <div >
+           
             </div>
           </div>
-        ) : null}
+       
         {/* Header/Navigation */}
         <header className="p-6 flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -173,13 +69,7 @@ export function Home() {
             {/* Main CTA Button */}
             <div className="relative">
               <button
-                ref={buttonRef}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                onClick={() => {
-                    
-                  setColor(true)
-                }}
+                
                 className="group relative hover:cursor-pointer px-12 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-lg font-semibold rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/25 focus:outline-none focus:ring-4 focus:ring-yellow-400/50"
               >
                 {/* Button Background Animation */}
@@ -190,7 +80,7 @@ export function Home() {
                   <span>Create a Game</span>
                   <svg
                     className={`w-5 h-5 transition-transform duration-300 ${
-                      isHovered ? "translate-x-1" : ""
+                      true ? "translate-x-1" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -213,10 +103,10 @@ export function Home() {
             {/* Quick Actions */}
             <div className="flex flex-wrap justify-center gap-4 pt-8">
               <button
-                ref={joinButtonRef}
+           
                 onClick={() => {
                  
-                  setjoin(true)
+                  
                 }}
                 className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-200"
               >
@@ -237,7 +127,8 @@ export function Home() {
                   <span>join game</span>
                 </span>
               </button>
-              <button className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-200">
+              <button
+               className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg border border-gray-700 hover:border-gray-600 transition-all duration-200">
                 <span className="flex items-center space-x-2">
                   <svg
                     className="w-4 h-4"
