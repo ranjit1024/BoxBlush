@@ -1,5 +1,5 @@
 import "../App.css"
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect, type MouseEventHandler } from 'react';
 import { Sparkles, Play, Users, ArrowRight, Zap, Grid3X3 } from 'lucide-react';
 
 const Home = () => {
@@ -100,9 +100,9 @@ const Home = () => {
             {/* Glassmorphism Description Card */}
             <div className="max-w-2xl mx-auto p-8 bg-zinc-900/30 backdrop-blur-2xl border border-zinc-800/30 rounded-3xl">
               <p className="text-xl text-zinc-300 leading-relaxed font-light">
-                Choose any color and try to fill the most boxes possible in this 
-                <span className="text-orange-400 font-medium"> mind-bending </span>
-                puzzle challenge
+                Choose any color and try to fill the most boxes possible in  
+                <span className="text-orange-400 font-medium"> game </span>
+                Who ever fill mout box will <span className="text-green-400 font-medium">Win</span>
               </p>
             </div>
           </div>
