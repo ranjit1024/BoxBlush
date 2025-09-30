@@ -1,17 +1,31 @@
 import "../App.css"
-import  { useState, useEffect, type MouseEventHandler } from 'react';
+import  { useState, useEffect, useRef,  } from 'react';
 import { Sparkles, Play, Users, ArrowRight, Zap, Grid3X3 } from 'lucide-react';
-
+import ColorSelector from "./colorPicker";
+import RoomCreated from "./room";
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  
+  const [chooseColor, setChosseColor] = useState<boolean>(false);
+  //create room chosse color
+  const createRoomRef = useRef<HTMLButtonElement | null>(null);
+  const createRoomRefSelectColor =  useRef<HTMLDivElement | null>(null)
+  //
+  useEffect(()=>{
+    const hide = (e:MouseEvent) =>{
+      if(createRoomRef.current && !createRoomRef.current.contains(e.target as Node) && createRoomRefSelectColor.current && !createRoomRefSelectColor.current.contains(e.target as Node)){
+        setChosseColor(false)
+      }
+    }
+    document.addEventListener("click", hide);
+    return () => {document.removeEventListener("click",hide)}
+  },[])
   useEffect(() => {
     const handleMouseMove = (e:any) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   const floatingElements = [
@@ -22,7 +36,17 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-black to-zinc-900 relative overflow-hidden">
+    <div className=" bg-gradient-to-br  from-zinc-950 via-black to-zinc-900 relative overflow-hidden">
+      {chooseColor?
+      <div >
+      <div className="absolute flex justify-center items-center h-[90vh] w-[100vw] z-60">
+        <div className="w-fit" ref={createRoomRefSelectColor} >
+       <ColorSelector send={()=>console.log("data")}/> 
+      
+        </div>
+      </div>
+      </div>:null}
+
       {/* Ultra-Modern Grain Texture */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02),transparent)] filter blur-3xl"></div>
@@ -85,7 +109,7 @@ const Home = () => {
           {/* Hero Section with Brutal Typography */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-8xl md:text-9xl lg:text-[12rem] font-black leading-none tracking-tighter">
+              <h2 className="text-4xl md:text-9xl lg:text-[8rem] font-black leading-none tracking-tighter">
                 <span className="block bg-gradient-to-r from-orange-300 via-orange-400 to-yellow-400 bg-clip-text text-transparent relative">
                   READY
                   <div className="absolute -inset-4 bg-gradient-to-r from-orange-400/20 to-yellow-400/20 blur-3xl -z-10"></div>
@@ -111,6 +135,8 @@ const Home = () => {
           <div className="space-y-8">
             {/* Primary Button - Neumorphism + Glassmorphism Hybrid */}
             <button 
+              ref={createRoomRef}
+              onClick={()=>setChosseColor(true)}
               className="group relative px-16 py-6 bg-gradient-to-r from-orange-400 to-pink-500 rounded-3xl font-bold text-xl text-black shadow-2xl hover:shadow-orange-500/25 transition-all duration-500 hover:scale-105 overflow-hidden"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
