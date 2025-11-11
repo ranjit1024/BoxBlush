@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { FC } from 'react';
 import { Play, Users, Zap, TrendingUp, ArrowRight, Sparkles, Flame, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import GameIdInput from '@/component/join';
 interface Feature {
   icon: React.ComponentType<{ size: number; className?: string }>;
   title: string;
@@ -89,9 +90,12 @@ const GameLandingPage: FC = () => {
     { value: '1000B+', label: 'Matches Played', gradient: 'from-green-400 to-green-500' },
     { value: '10^2★', label: 'App Rating', gradient: 'from-blue-400 to-blue-500' },
   ];
-
+  const [gameId,setGameId] = useState<boolean>(false);
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className='absolute flex overflow-hidden justify-center items-center z-10 w-[100%]'>
+      {gameId ?<GameIdInput close={()=>setGameId(status => !status)}/> :null}
+        </div>
       {/* Animated Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-0 left-0 w-96 h-96 bg-red-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
@@ -141,7 +145,7 @@ const GameLandingPage: FC = () => {
 
             <div className="flex gap-4 pt-4">
               <button onClick={()=>{
-                navigate('/game')
+                setGameId(true)
               }} className="group hover:cursor-pointer relative px-8 py-4 rounded-xl font-bold overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 group-hover:from-red-600 group-hover:to-red-700 transition-all duration-300 group-hover:scale-110 origin-center" />
                 <div className="relative flex items-center gap-2 text-white">
