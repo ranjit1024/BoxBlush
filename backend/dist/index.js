@@ -26,9 +26,10 @@ wssServer.on("request", (request) => {
     clients[clientId] = {
         "connection": connection
     };
+    console.log(Object.keys(clients).length);
     const payLoad = {
         "method": "connect",
-        "clinetId": clientId
+        "clientId": clientId
     };
     connection.send(JSON.stringify(payLoad));
 });
