@@ -153,7 +153,12 @@ const GameLandingPage: FC = () => {
                   Join
                 </div>
               </button>
-              <button className="group hover:cursor-pointer relative px-8 py-4 rounded-xl font-bold overflow-hidden">
+              <button 
+              onClick={()=>{
+                
+                navigate("/game")
+              }}
+              className="group hover:cursor-pointer relative px-8 py-4 rounded-xl font-bold overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-900 border-gray-50 to-gray-900 group-hover:from-gray-900 group-hover:to-gray-700 transition-all duration-300 group-hover:scale-110 origin-center" />
                 <div className="relative flex items-center gap-2 text-white">
                   <Gamepad2 size={20} className="group-hover:translate-x-1 transition-transform" />
