@@ -5,6 +5,7 @@ import crypto from "crypto";
 const httpSever = http.createServer();
 // hamsh map
 const clients:{[key:string]:any} = {};
+const games:Record<string,any> = {}
 httpSever.listen(8080, ()=>{
     console.log('Web server Listgin on port number 8080');
 });
@@ -18,8 +19,24 @@ wssServer.on("request", (request:any)=>{
     const connection = request.accept(null, request.origin);
     connection.on("open", ()=>console.log("opened!..."));
     connection.on("message",(message:any)=>{
+        const payloadData: {
+            method:string,
+            clientId:string
+        } = JSON.parse(message.utf8Data);
+        if(payloadData.method === "create"){
+         const cliendId = payloadData.clientId;
+         const gameId = crypto.randomUUID();
+        
+         const payLoad = {
+            "method":"create",
+            "game": games[gameId] = {
+            "id":gameId,
+            "cells":20
+         }
+         }
+         connection[cliendId].send(JSON.stringify(payLoad))
+        }
 
-        console.log(console.log(message.utf8Data))
     } );
     connection.on("close", ()=>console.log("close!..."));
     clients[clientId] = {

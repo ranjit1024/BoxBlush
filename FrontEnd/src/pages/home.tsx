@@ -24,8 +24,9 @@ interface FooterSection {
 
 const GameLandingPage: FC = () => {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
-  const connection = useRef(null);
-  const navigate = useNavigate()
+  const connection = useRef<WebSocket | null>(null);
+  const navigate = useNavigate();
+  const [cells, setCells] = useState(0);
   useEffect(()=>{
     const socket = new WebSocket('ws://localhost:8080');
     socket.onopen = () =>{
@@ -33,10 +34,24 @@ const GameLandingPage: FC = () => {
     }
     socket.onmessage = (event) =>{
       const data = JSON.parse(event.data);
-      console.log(data)
-      localStorage.setItem("clientId",data.clientId);
+      if(data.method === "connect"){
+        localStorage.setItem("clientId",data.clientId);
+        console.log(data)
+      }
+      if(data.method === "create"){
+          localStorage.setItem("gameId",data.game.id);
+          console.log("game",data.game);
+          setCells(data.game.cells)
+      }
+      
+      
     }
-  },[])
+    connection.current = socket;
+    return ()=>{
+      socket.close()
+    }
+  },[connection])
+ 
   const features: Feature[] = [
     {
       icon: Users,
@@ -155,7 +170,14 @@ const GameLandingPage: FC = () => {
               </button>
               <button 
               onClick={()=>{
+                if(connection.current && connection.current.OPEN){
+                  const payload = {
+                    "method":"create",
+                    "clientId":localStorage.getItem('clientId')
+                  }
+                  connection.current.send(JSON.stringify(payload));
                 
+                }
                 navigate("/game")
               }}
               className="group hover:cursor-pointer relative px-8 py-4 rounded-xl font-bold overflow-hidden">
