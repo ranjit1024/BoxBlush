@@ -25,6 +25,7 @@ wssServer.on("request", (request) => {
         if (payloadData.method === "create") {
             const cliendId = payloadData.clientId;
             const gameId = crypto_1.default.randomUUID();
+            console.log(gameId);
             const payLoad = {
                 "method": "create",
                 "game": games[gameId] = {
@@ -32,8 +33,7 @@ wssServer.on("request", (request) => {
                     "cells": 20
                 }
             };
-            const con = clients[cliendId].connection;
-            con.send(JSON.stringify(payLoad))
+            connection[cliendId].send(JSON.stringify(payLoad));
         }
     });
     connection.on("close", () => console.log("close!..."));

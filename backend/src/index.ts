@@ -26,7 +26,7 @@ wssServer.on("request", (request:any)=>{
         if(payloadData.method === "create"){
          const cliendId = payloadData.clientId;
          const gameId = crypto.randomUUID();
-        
+         console.log(gameId)
          const payLoad = {
             "method":"create",
             "game": games[gameId] = {
